@@ -10,6 +10,10 @@ import Moya
 import RxMoya
 import RxSwift
 
+enum NetworkErrorType: Error {
+    case decodeError
+}
+
 public struct NetworkSystem {
     private init() { }
     public static let shared = NetworkSystem()
@@ -41,10 +45,8 @@ public struct NetworkSystem {
                                    single(.failure(NetworkError.emptyData))
                                }
                            }
-                           //observer.onCompleted()
                        } catch {
-                           //observer.onNext(.failure(error))
-                           //observer.onCompleted()
+                           single(.failure(NetworkErrorType.decodeError))
                        }
                    case .failure(let error):
                        single(.failure(error))
